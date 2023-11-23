@@ -1,0 +1,27 @@
+{
+  "printWidth": 80,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "bracketSpacing": true,
+  "jsxBracketSameLine": false,
+  "arrowParens": "avoid",
+  "proseWrap": "always",
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "^@/components/(.*)$",
+    "^@/screens/(.*)$",
+    "^@/shared/(.*)$",
+    "^@/services/(.*)$",
+    "^@/assets/(.*)$",
+    "^@/utils/(.*)$",
+    "^@/config/(.*)$",
+    "^@/providers/(.*)$",
+    "^../(.*)",
+    "^./(.*)"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}
