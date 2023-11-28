@@ -1,42 +1,71 @@
-import React, { useState, useEffect } from 'react';
-import { Pressable, Image, View, Platform, Text } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import {
+  Image,
+  View,
+  TouchableWithoutFeedback,
+  StyleSheet,
+} from 'react-native';
 
-const ImagePickerExample = () => {
-  const [selectedImage, setSelectedImage] = useState('');
-  const [files, setFiles] = useState([]);
+import { COLORS } from '@/constants';
+import NewSVG from '@/assets/img/NewSVG';
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [3, 3],
-      quality: 1,
-    });
+type ImageLoaderProps = {
+  onPress: () => Promise<void>;
+  selectedImage: string;
+};
 
-    console.log(result);
-
-    if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
-    }
-  };
+const ImagePickerExample = (props: ImageLoaderProps) => {
+  const { onPress, selectedImage } = props;
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Pressable onPress={pickImage}>
-        <View>
-          <Text>Pick an image from camera roll</Text>
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={styles.imgWrapper}>
+        {selectedImage && (
+          <Image source={{ uri: selectedImage }} style={styles.img} />
+        )}
+        <View
+          style={[
+            styles.svgWrapper,
+            {
+              borderColor:
+                selectedImage === '' ? COLORS.secondary : COLORS.graydark,
+              backgroundColor: selectedImage && COLORS.white,
+              transform: selectedImage && [{ rotateZ: '45deg' }],
+            },
+          ]}
+        >
+          <NewSVG
+            fill={selectedImage === '' ? COLORS.secondary : COLORS.graydark}
+          />
         </View>
-      </Pressable>
-
-      {selectedImage && (
-        <Image
-          source={{ uri: selectedImage }}
-          style={{ width: 200, height: 200 }}
-        />
-      )}
-    </View>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
+
+const styles = StyleSheet.create({
+  imgWrapper: {
+    width: 120,
+    height: 120,
+    marginTop: -60,
+    borderRadius: 16,
+    backgroundColor: COLORS.gray,
+  },
+  img: {
+    width: 120,
+    height: 120,
+    borderRadius: 16,
+  },
+  svgWrapper: {
+    width: 24,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1.25,
+    borderRadius: 12,
+    position: 'absolute',
+    right: -12,
+    bottom: 12,
+  },
+});
 
 export default ImagePickerExample;

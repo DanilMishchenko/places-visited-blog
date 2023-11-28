@@ -1,6 +1,6 @@
-import AddPublication from './app/screens/AddPublicationScreen';
 import { useFonts } from 'expo-font';
-import ImagePickerExample from '@/components/ImagePickerExample';
+import { View } from 'react-native';
+import AuthScreen from '@/screens/AuthScreen';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -13,5 +13,9 @@ export default function App() {
     return null;
   }
 
-  return <ImagePickerExample />;
+  return (
+    <View style={{ flex: 1 }}>
+      <AuthScreen />
+    </View>
+  );
 }
