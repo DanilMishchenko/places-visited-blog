@@ -1,13 +1,14 @@
-import React from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, Text, TextInput } from 'react-native';
 
 import { AuthFormData } from '@/types/auth.interface';
 
 import { Control, Controller, FieldPath } from 'react-hook-form';
 import { COLORS } from '@/constants';
 
-type PlaceholderInput = {
+type OtherProps = {
   placeholder: string;
+  secureTextEntry?: boolean;
+  children?: React.ReactElement;
 };
 
 type UseControllerProps<
@@ -18,9 +19,15 @@ type UseControllerProps<
   control?: Control<AuthFormData>;
 };
 
-type Test = UseControllerProps & PlaceholderInput;
+type Test = UseControllerProps & OtherProps;
 
-const CustomInput = ({ name, control, placeholder }: Test) => {
+const CustomInput = ({
+  children,
+  name,
+  control,
+  placeholder,
+  secureTextEntry,
+}: Test) => {
   return (
     <Controller
       control={control}
@@ -29,28 +36,41 @@ const CustomInput = ({ name, control, placeholder }: Test) => {
         field: { value, onChange, onBlur },
         fieldState: { error },
       }) => (
-        <>
-          <TextInput
-            value={value}
-            onChangeText={onChange}
-            onBlur={onBlur}
-            placeholder={placeholder}
+        <View
+          style={{
+            marginBottom: 12,
+          }}
+        >
+          <View
             style={{
-              height: 48,
-              marginBottom: 12,
-              borderWidth: 1,
-              borderColor: COLORS.graydark,
-              borderRadius: 12,
-              backgroundColor: COLORS.gray,
-              padding: 16,
+              position: 'relative',
+              justifyContent: 'center',
             }}
-          />
+          >
+            <TextInput
+              value={value}
+              secureTextEntry={secureTextEntry}
+              onChangeText={onChange}
+              onBlur={onBlur}
+              placeholder={placeholder}
+              style={{
+                fontSize: 16,
+                color: COLORS.primary,
+                fontFamily: 'regular',
+                height: 48,
+                borderWidth: 1,
+                borderColor: COLORS.graydark,
+                borderRadius: 12,
+                backgroundColor: COLORS.gray,
+                padding: 16,
+              }}
+            />
+            {children}
+          </View>
           {error && (
-            <Text style={{ color: 'red', marginBottom: 12 }}>
-              {error.message}
-            </Text>
+            <Text style={{ color: 'red', marginTop: 12 }}>{error.message}</Text>
           )}
-        </>
+        </View>
       )}
     />
   );

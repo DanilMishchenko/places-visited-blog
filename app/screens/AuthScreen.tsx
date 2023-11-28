@@ -19,6 +19,7 @@ import CustomInput from '@/components/CustomInput';
 
 import { COLORS } from '@/constants';
 import ImagePickerExample from '@/components/ImagePickerExample';
+import SecureTextButton from '@/components/SecureTextButton';
 
 const schema = yup.object().shape({
   login: yup
@@ -38,6 +39,7 @@ const schema = yup.object().shape({
 
 const AuthScreen = () => {
   const [selectedImage, setSelectedImage] = useState('');
+  const [showPassword, setShowPassword] = useState(true);
   const [files, setFiles] = useState([]);
 
   const { control, handleSubmit } = useForm<AuthFormData>({
@@ -82,7 +84,7 @@ const AuthScreen = () => {
               selectedImage={selectedImage}
             />
             <Text style={styles.title}>Реєстрація</Text>
-            <View style={{ width: '100%' }}>
+            <View style={styles.formContainer}>
               <CustomInput name="login" control={control} placeholder="Логін" />
               <CustomInput
                 name="email"
@@ -91,9 +93,15 @@ const AuthScreen = () => {
               />
               <CustomInput
                 name="password"
+                secureTextEntry={showPassword}
                 control={control}
                 placeholder="Пароль"
-              />
+              >
+                <SecureTextButton
+                  showText={showPassword}
+                  onPress={() => setShowPassword(!showPassword)}
+                />
+              </CustomInput>
               <TouchableOpacity onPress={handleSubmit(onSubmit)}>
                 <View style={styles.btnSubmit}>
                   <Text style={styles.submitText}>Зареєструватися</Text>
@@ -134,6 +142,9 @@ const styles = StyleSheet.create({
     fontFamily: 'medium',
     fontSize: 28,
     letterSpacing: 0.3,
+  },
+  formContainer: {
+    width: '100%',
   },
   btnSubmit: {
     justifyContent: 'center',
